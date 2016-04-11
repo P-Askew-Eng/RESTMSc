@@ -1,4 +1,4 @@
-# The Use of Anaearobic Digestion in the processing of on site Food Waste
+# The Use of Anaerobic Digestion in the processing of on site Food Waste
 
 Repository for Scripts used in REST MSc Project
 
