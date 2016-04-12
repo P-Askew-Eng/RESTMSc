@@ -2,9 +2,10 @@
 
 Repository for Scripts used in REST MSc Project
 
-This conains scripts and data used in the Project
+This contains scripts and data used in the Project
 
 ##Contents
 
-1. Sankey.py
+1. Food Waste Sankey.py
+2. ADSiteAnalysis.R
 
