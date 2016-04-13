@@ -33,5 +33,6 @@ wastesites<-ADSites[ADSites$Type=='Waste-fed',]
 sum(farmsites$Capacity_kWe,na.rm=T)
 sum(wastesites$Capacity_kWe,na.rm=T)
 sitetypes<-c(sum(wastesites$Capacity_kWe,na.rm=T),sum(farmsites$Capacity_kWe,na.rm=T))
+pielabels<-paste(round(sitetypes/1000,1), "MWe")
 pie(sitetypes,labels=pielabels, main = "Types of AD Sites by Capacity (kWe)",col=rainbow(2))
 legend("topright",c("Waste Sites", "Farm Sites"),fill=rainbow(2))
