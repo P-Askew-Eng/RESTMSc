@@ -19,7 +19,7 @@ ADSites<-ADSites[!(ADSites$Region==""),]
 ADSites<-ADSites[!(ADSites$Region=="Subtotals"),]
 colnames(ADSites)[6]<-"Capacity_kWe"
 colnames(ADSites)[13]<-"Demand_tonnes_pa"
-ADSites[]
+ ADSites<-ADSites[complete.cases(ADSites[,c(1,2,3,4)]),]#remove blank rows at end
 ADSites$Capacity_kWe<-as.numeric(as.character((paste(ADSites$Capacity_kWe))))
 
 
@@ -30,5 +30,8 @@ wastesites<-ADSites[ADSites$Type=='Waste-fed',]
 
 
 
-sum(farmsites$Capacity_kWe)
-
+sum(farmsites$Capacity_kWe,na.rm=T)
+sum(wastesites$Capacity_kWe,na.rm=T)
+sitetypes<-c(sum(wastesites$Capacity_kWe,na.rm=T),sum(farmsites$Capacity_kWe,na.rm=T))
+pie(sitetypes,labels=pielabels, main = "Types of AD Sites by Capacity (kWe)",col=rainbow(2))
+legend("topright",c("Waste Sites", "Farm Sites"),fill=rainbow(2))
