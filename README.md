@@ -6,6 +6,7 @@ This contains scripts and data used in the Project
 
 ##Contents
 
-1. Food Waste Sankey.py
-2. ADSiteAnalysis.R
+1. Food Waste Sankey.py - draw a Sankey diagram of food waste flows based on WRAP data
+2. ADSiteAnalysis.R - anlayse AD sites from ADBA/NNFCC data
+3. Buswell.R - calculate volume of gas produced from a given formula and mass of feedstock using Buswell equation.
 
