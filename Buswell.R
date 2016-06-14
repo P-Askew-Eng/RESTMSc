@@ -53,3 +53,10 @@ co2moles<-co2mass*1000/44.0095
 volco2<-co2moles*0.0224
 print(paste(fsmass,"kg of feedstock produces",round(volch4,1),"cubic metres of biomethane and",round(volco2,1),"cubic metres of CO2"))
 print(paste(round(volco2+volch4,1),"m3 of biogas at standard temperature and pressure",sep=""))
+
+
+#COD Calculations (waste water handbook first edition)
+COD<-8*(4*c+h-2*o)/(12*c+h+16*o)
+print(paste("COD is ",round(COD,2),"g O2 per g ",feedstock,sep=""))
+TOC<-cmass/fsmolarmass
+print(paste("TOC is ",round(TOC,2),"g C per g ",feedstock,sep=""))
