@@ -15,3 +15,6 @@ vignettes/*.pdf
 .Rproj.user
 RESTMSc.Rproj
 data
+-pauls_tablet.RData
+README-pauls_tablet.md
+-pauls_tablet.Rhistory
