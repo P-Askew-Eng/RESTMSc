@@ -10,7 +10,7 @@ library(ggplot2)
 library(openxlsx)
 
 #Read in data and remove blank lines at top and bottom
-ADurl<-"http://www.biogas-info.co.uk/wp-content/uploads/2015/06/AD-portal-map_site-list_external_October_2015.xlsx"
+ADurl<-"http://www.biogas-info.co.uk/wp-content/uploads/2015/06/AD-portal-map_site-list_external_April-_2016.xlsx"
 if (!file.exists("./data/ADSiteList.xlsx")){
   download.file(ADurl,destfile="./data/ADSiteList.xlsx",mode="wb")
 }
@@ -37,3 +37,8 @@ sitetypes<-c(sum(wastesites$Capacity_kWe,na.rm=T),sum(farmsites$Capacity_kWe,na.
 pielabels<-paste(round(sitetypes/1000,1), "MWe")
 pie(sitetypes,labels=pielabels, main = "Types of AD Sites by Capacity (MWe)",col=rainbow(2))
 legend("topright",c("Waste Sites", "Farm Sites"),fill=rainbow(2))
+
+plot.window(xlim=c(0,100000),ylim=c(0,3000),log="",asp=NA)
+plot(x=ADSites$`Feedstock.demand.(tpa)`,y=ADSites$Capacity_kWe,type="p",
+     xlab="Annual feedstock demand (tonnes per annum)",
+     ylab="AD output kWe", main="Comparison of feedstock demand and electricity output")
