@@ -18,7 +18,7 @@ ADSites<-read.xlsx("./data/ADSiteList.xlsx",startRow=5,colNames=TRUE)
 ADSites<-ADSites[!(ADSites$Region==""),]
 ADSites<-ADSites[!(ADSites$Region=="Subtotals"),]
 colnames(ADSites)[6]<-"Capacity_kWe"
-colnames(ADSites)[13]<-"Demand_tonnes_pa"
+colnames(ADSites)[12]<-"Demand_tonnes_pa"
 ADSites<-ADSites[complete.cases(ADSites[,c(1,2,3,4)]),]#remove blank rows at end
 ADSites$Capacity_kWe<-as.numeric(as.character((paste(ADSites$Capacity_kWe))))
 
@@ -39,6 +39,9 @@ pie(sitetypes,labels=pielabels, main = "Types of AD Sites by Capacity (MWe)",col
 legend("topright",c("Waste Sites", "Farm Sites"),fill=rainbow(2))
 
 plot.window(xlim=c(0,100000),ylim=c(0,3000),log="",asp=NA)
-plot(x=ADSites$`Feedstock.demand.(tpa)`,y=ADSites$Capacity_kWe,type="p",
+plot(x=ADSites$Demand_tonnes_pa,y=ADSites$Capacity_kWe,type="p",
      xlab="Annual feedstock demand (tonnes per annum)",
      ylab="AD output kWe", main="Comparison of feedstock demand and electricity output")
+
+#data<-data.frame(ADSites)
+#a<-ggplot(data,aes(x=Demand_tonnes_pa,y=Capacity_kWe))+geom_jitter(aes(color="red"),na.rm=T)

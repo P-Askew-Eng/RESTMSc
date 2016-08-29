@@ -1,4 +1,4 @@
-6print("Buswell's Equation Evaluation")
+print("Buswell's Equation Evaluation")
 c<-as.numeric(readline(prompt="Enter atoms of carbon: "))
 h<-as.numeric(readline(prompt="Enter atoms of hydrogen: "))
 o<-as.numeric(readline(prompt="Enter atoms of oxygen: "))
