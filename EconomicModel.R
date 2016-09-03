@@ -19,7 +19,7 @@ transport<-15
 efwgate<-42
 digestate<-2
 
-#set up matircs for table
+#set up matrices for table
 FSCOD<-c(1.0,1.5,2.0,2.5,3.0)
 FSMasspd<-c(100,150,200,250,300,350,400,450,500)
 ecotable<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
@@ -28,6 +28,13 @@ rownames(ecotable)<-FSCOD
 heatable<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
 colnames(heatable)<-FSMasspd
 rownames(heatable)<-FSCOD
+elecpayback<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
+colnames(elecpayback)<-FSMasspd
+rownames(elecpayback)<-FSCOD
+heatpayback<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
+colnames(heatpayback)<-FSMasspd
+rownames(heatpayback)<-FSCOD
+
 
 # loops to create tables
 for (i in 1:length(FSCOD)){
@@ -66,10 +73,16 @@ for (i in 1:length(FSCOD)){
    npv <- function(r, cf, t=seq(along=cf)) sum(cf/(1+r)^t) 
    irr <- function(cf) { uniroot(npv, c(0,1), cf=cf,extendInt = "yes")$root } #NB need extenInt to avoiderror but creates error in heattable
    ans<-irr(cf)
+   if (ans<0) ans<-NA
    ans2<-irr(cf2)
-   ecotable[i,j]<-round(ans*100,2)
-   heatable[i,j]<-round(ans2*100,2) #
+   if (ans2<0) ans2<-NA
+   ecotable[i,j]<-round(ans*100,2) #irr for electricity
+   heatable[i,j]<-round(ans2*100,2) #irr for heat
+   elecpayback[i,j]<-round(CapitalCost/netannual,2)
+   heatpayback[i,j]<-round(CapitalCost/netannual2,2)
   }
 }
 ecotable
 heatable
+elecpayback
+heatpayback
