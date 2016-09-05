@@ -4,7 +4,7 @@
 CapitalCost<-100000 #Capital Cost of plant
 opcostrate<-0.05 #operating cost per annum as proportion of capital
 opcost<-opcostrate*CapitalCost
-ADeff<-0.6 #efficiency wth which AD converts feedstock to biomethane
+ADeff<-0.85 #efficiency wth which AD converts feedstock to biomethane
 geneff<-0.35 #efficiency of electrical generator
 boilereff<-0.95 #efficiency of boiler
 years=20 #years of operation
@@ -20,7 +20,7 @@ efwgate<-42
 digestate<-2
 
 #set up matrices for table
-FSCOD<-c(1.0,1.5,2.0,2.5,3.0)
+FSCOD<-c(1.0,1.5,2.0,2.5,3.0,3.5)
 FSMasspd<-c(100,150,200,250,300,350,400,450,500)
 ecotable<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
 colnames(ecotable)<-FSMasspd
@@ -59,8 +59,8 @@ for (i in 1:length(FSCOD)){
 
 
    #CREATE CASHFLOW
-   income1<-fitpa+retailelec+efwsaving # annual income for electricity
-   income2<-rhipa+retailheat+efwsaving #annual income for heat
+   income1<-fitpa+retailelec+efwsaving+digestate # annual income for electricity
+   income2<-rhipa+retailheat+efwsaving+digestate #annual income for heat
    netannual=income1-opcost #net income after operating costs for electricity
    netannual2=income2-opcost #net income for operating costs for heat
 
@@ -76,13 +76,17 @@ for (i in 1:length(FSCOD)){
    if (ans<0) ans<-NA
    ans2<-irr(cf2)
    if (ans2<0) ans2<-NA
-   ecotable[i,j]<-round(ans*100,2) #irr for electricity
-   heatable[i,j]<-round(ans2*100,2) #irr for heat
-   elecpayback[i,j]<-round(CapitalCost/netannual,2)
-   heatpayback[i,j]<-round(CapitalCost/netannual2,2)
+   ecotable[i,j]<-round(ans*100,1) #irr for electricity
+   heatable[i,j]<-round(ans2*100,1) #irr for heat
+   elecpayback[i,j]<-round(CapitalCost/netannual,1)# simple payback for electricity
+   heatpayback[i,j]<-round(CapitalCost/netannual2,1) # simple payback for heat
   }
 }
-ecotable
-heatable
-elecpayback
-heatpayback
+print("Simple Payback of AD in electricity generation (years)")
+print(elecpayback)
+print("IRR for use of AD in electricity generation %")
+print(ecotable)
+print("Simple Payback of AD in heat generation (years)")
+print(heatpayback)
+print("IRR for use of AD in heat generation %")
+print(heatable)

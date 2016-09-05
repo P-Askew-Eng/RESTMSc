@@ -58,5 +58,7 @@ FSMasspd<-as.numeric(readline(prompt="Enter amount of feedstock per day in kg : 
    irr <- function(cf) { uniroot(npv, c(0,1), cf=cf,extendInt = "yes")$root } #NB need extenInt to avoid error 
    ans<-irr(cf)
    ans2<-irr(cf2)
+   elecpayback<-round(CapitalCost/netannual,2)# simple payback for electricity
+   heatpayback<-round(CapitalCost/netannual2,2) # simple payback for heat
 print(paste("For ",FSMasspd,"kg of feedstock with a COD of ",FSCOD,"g/g an IRR of ",round(ans*100,2),"% can be expected for the generation of electricity"))
 print(paste("For ",FSMasspd,"kg of feedstock with a COD of ",FSCOD,"g/g an IRR of ",round(ans2*100,2),"% can be expected for the generation of heat"))
