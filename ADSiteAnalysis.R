@@ -38,7 +38,12 @@ pielabels<-paste(round(sitetypes/1000,1), "MWe")
 pie(sitetypes,labels=pielabels, main = "Types of AD Sites by Capacity (MWe)",col=rainbow(2))
 legend("topright",c("Waste Sites", "Farm Sites"),fill=rainbow(2))
 
-plot.window(xlim=c(0,100000),ylim=c(0,3000),log="",asp=NA)
+plot.window(xlim=c(0,100000),ylim=c(0,3000),log="x",asp=NA)
+plot(x=ADSites$Demand_tonnes_pa,y=ADSites$Capacity_kWe,type="p",
+     xlab="Annual feedstock demand (tonnes per annum)",
+     ylab="AD output kWe", main="Comparison of feedstock demand and electricity output")
+
+plot.window(xlim=c(0,10000),ylim=c(0,500),log="",asp=NA)
 plot(x=ADSites$Demand_tonnes_pa,y=ADSites$Capacity_kWe,type="p",
      xlab="Annual feedstock demand (tonnes per annum)",
      ylab="AD output kWe", main="Comparison of feedstock demand and electricity output")

@@ -1,0 +1,132 @@
+---
+title: "MSc Project Sensitvity Analysis"
+author: "Paul Askew"
+date: "5 September 2016"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+CapitalCost<-100000 #Capital Cost of plant
+opcostrate<-0.05 #operating cost per annum as proportion of capital
+
+ADeff<-0.85 #efficiency wth which AD converts feedstock to biomethane
+geneff<-0.35 #efficiency of electrical generator
+boilereff<-0.95 #efficiency of boiler
+years=20 #years of operation
+
+
+ADEIRR<-function(Capital,subsidy,energy,waste,conversion){
+  #set up matrices for table
+FSCOD<-c(1.0,1.5,2.0,2.5,3.0,3.5)
+FSMasspd<-c(100,150,200,250,300,350,400,450,500)
+energytable<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
+colnames(energytable)<-FSMasspd
+rownames(energytable)<-FSCOD
+energypayback<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
+colnames(energypayback)<-FSMasspd
+rownames(energypayback)<-FSCOD
+
+
+
+# loops to create tables
+for (i in 1:length(FSCOD)){
+ for (j in 1:length(FSMasspd)){
+
+   gasvol<-FSCOD[i]*FSMasspd[j]*ADeff*0.35
+   kWhtotal<-gasvol*10
+   kWh<-kWhtotal*conversion
+   kWhe<-kWhtotal*geneff
+   #Calculate Annual benefits
+   energypa<-kWh*365
+   subsidypa<-energypa*subsidy
+   retailenergy<-energy*energypa
+   wastesaving<-FSMasspd[j]*(waste)/1000*365
+   opcost<-opcostrate*Capital
+
+
+   #CREATE CASHFLOW
+   income1<-subsidypa+retailenergy+wastesaving # annual income for energy
+   netannual=income1-opcost #net income after operating costs for electricity
+
+
+   cf <- rep(netannual,each=years) #annual cashflow
+   cf[1]<-cf[1]-Capital        # adjust first year for capital cost
+  
+#calculate IRR
+
+   npv <- function(r, cf, t=seq(along=cf)) sum(cf/(1+r)^t) 
+   irr <- function(cf) { uniroot(npv, c(0,1), cf=cf,extendInt = "yes")$root } #NB need extenInt to avoiderror but creates error in heattable
+   ans<-irr(cf)
+   if (ans<0) ans<-NA
+  energytable[i,j]<-round(ans*100,1) #irr for energy
+
+  }
+}
+return(energytable)
+
+}
+
+ADEPayback<-function(Capital,subsidy,energy,waste,conversion){
+  #set up matrices for table
+FSCOD<-c(1.0,1.5,2.0,2.5,3.0,3.5)
+FSMasspd<-c(100,150,200,250,300,350,400,450,500)
+energytable<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
+colnames(energytable)<-FSMasspd
+rownames(energytable)<-FSCOD
+energypayback<-matrix(data=NA,nrow=length(FSCOD),ncol=length(FSMasspd))
+colnames(energypayback)<-FSMasspd
+rownames(energypayback)<-FSCOD
+
+
+
+# loops to create tables
+for (i in 1:length(FSCOD)){
+ for (j in 1:length(FSMasspd)){
+
+   gasvol<-FSCOD[i]*FSMasspd[j]*ADeff*0.35
+   kWhtotal<-gasvol*10
+   kWh<-kWhtotal*conversion
+   kWhe<-kWhtotal*geneff
+   #Calculate Annual benefits
+   energypa<-kWh*365
+   subsidypa<-energypa*subsidy
+   retailenergy<-energy*energypa
+   wastesaving<-FSMasspd[j]*(waste)/1000*365
+   opcost<-opcostrate*Capital
+
+
+   #CREATE CASHFLOW
+   income1<-subsidypa+retailenergy+wastesaving # annual income for energy
+   netannual=income1-opcost #net income after operating costs for electricity
+
+
+
+
+   energypayback[i,j]<-round(CapitalCost/netannual,1)# simple payback for electricity
+
+  }
+}
+
+return(energypayback)
+}
+```
+
+## Annex B
+
+This is a summary of sensitivity analysis
+
+```{r cars}
+ADEIRR(100000,.079,.105,100,0.95)
+
+ADEPayback(100000,.079,.105,100,0.95)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
